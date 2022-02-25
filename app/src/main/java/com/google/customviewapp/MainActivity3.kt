@@ -25,6 +25,9 @@ class MainActivity3 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+
+
         val adapter = PagerAdapter(
             listOf(FragmentOne(), FragmentTwo()),
             lifecycle = lifecycle,
