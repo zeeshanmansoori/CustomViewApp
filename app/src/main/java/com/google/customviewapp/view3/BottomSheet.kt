@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.customviewapp.databinding.FragmentThreeBinding
 
-class BottomSheet(val dissmissListener: () -> Unit) : BottomSheetDialogFragment() {
+class BottomSheet() : BottomSheetDialogFragment() {
 
     private var binding: FragmentThreeBinding? = null
     override fun onCreateView(
@@ -25,8 +25,4 @@ class BottomSheet(val dissmissListener: () -> Unit) : BottomSheetDialogFragment(
         super.onViewCreated(view, savedInstanceState)
     }
 
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-        dissmissListener.invoke()
-    }
 }

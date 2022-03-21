@@ -1,20 +1,15 @@
 package com.google.customviewapp
 
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
+import com.google.customviewapp.displayOverlay.ForegroundService
 import com.google.customviewapp.views.DrawerView
 import com.google.customviewapp.views.EnterTextBtmSheet
-
-/**
- * Make an app with a full-screen canvas view whiteboard and OCR the drawn text/ character.
-
-• Should be able to draw text/character anywhere on the canvas view.
-
-• When clicked on the drawn text/character, it should open a popup dialog with an edit text prefilled with the text that has been detected.
-
- * */
 class MainActivity : AppCompatActivity(), DrawerView.DrawerListener {
 
     lateinit var canvas: DrawerView
@@ -23,11 +18,10 @@ class MainActivity : AppCompatActivity(), DrawerView.DrawerListener {
         setContentView(R.layout.activity_main)
 
 
-        canvas = findViewById<DrawerView>(R.id.my_canvas)
+        canvas = findViewById(R.id.my_canvas)
         canvas.setListener(this)
         findViewById<MaterialButton>(R.id.clear_btn).setOnClickListener {
             canvas.clearCanvas()
-
         }
 
         findViewById<MaterialButton>(R.id.apply_paint_btn).setOnClickListener {
@@ -35,10 +29,8 @@ class MainActivity : AppCompatActivity(), DrawerView.DrawerListener {
 
         }
 
-
-        val height = resources.displayMetrics.heightPixels
-        val width = resources.displayMetrics.widthPixels
-        Log.d("zeeshan", "onCreate: height $height  width $width")
+        checkOverlayPermission()
+        startService()
     }
 
     override fun onclick() {
@@ -48,5 +40,23 @@ class MainActivity : AppCompatActivity(), DrawerView.DrawerListener {
 
     private fun drawText(text: String) {
         canvas.drawText(text)
+    }
+
+    private fun startService() {
+        // check if the user has already granted
+        // the Draw over other apps permission
+        if (Settings.canDrawOverlays(this)) {
+            // start the service based on the android version
+            startForegroundService(Intent(this, ForegroundService::class.java))
+        }
+    }
+
+    // method to ask user to grant the Overlay permission
+    private fun checkOverlayPermission() {
+        if (!Settings.canDrawOverlays(this)) {
+            // send user to the device settings
+            val myIntent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)
+            startActivity(myIntent)
+        }
     }
 }

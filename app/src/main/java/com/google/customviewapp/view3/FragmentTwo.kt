@@ -3,6 +3,7 @@ package com.google.customviewapp.view3
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import com.google.android.material.tabs.TabLayout
 import com.google.customviewapp.R
 import com.google.customviewapp.databinding.FragmentOneBinding
 import com.google.customviewapp.databinding.FragmentTwoBinding
@@ -12,5 +13,8 @@ class FragmentTwo : Fragment(R.layout.fragment_two) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentTwoBinding.bind(view)
+        val tabLayout = binding.tabLayout
+        tabLayout.addTab(tabLayout.newTab().apply { text = "  chats " })
+        tabLayout.addTab(tabLayout.newTab().apply { text = "contacts" })
     }
 }

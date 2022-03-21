@@ -73,13 +73,12 @@ class DrawerView(context: Context, attributeSet: AttributeSet? = null) :
         if (mBitmap != null)
             canvas?.drawBitmap(mBitmap!!, 0f, 0f, null)
         //canvas?.drawLine(startX,startY,stopX,stopY,mPaint)
-
+        //drawRectf(canvas!!)
     }
 
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-
 
         val action = event?.action ?: return true
 
@@ -193,4 +192,11 @@ class DrawerView(context: Context, attributeSet: AttributeSet? = null) :
     }
 
 
+    fun drawRectf(canvas: Canvas) {
+
+        //width = | left - right |
+        //height = | top - bottom |
+        val rectF = RectF(10f, 10f, 210f, 100f)
+        canvas.drawRect(rectF, mPaint)
+    }
 }
