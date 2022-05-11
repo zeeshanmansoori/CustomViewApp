@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:text="clear Canvas"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/apply_paint_btn"
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:text="apply paint"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

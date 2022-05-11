@@ -24,11 +24,13 @@ class DrawerView(context: Context, attributeSet: AttributeSet? = null) :
     private var stopY = 0f
 
     private val path = Path()
+    private val linePath = Path()
     private var drawerText: String? = null
     private var listener: DrawerListener? = null
     private var fill: Boolean = false
     private var mBitmap: Bitmap? = null
     private var mCanvas: Canvas? = null
+    private val recff = RectF(50f, 50f, 200f, 200f)
 
     init {
 
@@ -45,7 +47,7 @@ class DrawerView(context: Context, attributeSet: AttributeSet? = null) :
             xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_OVER)
             shader = null
 
-
+            linePath.addRect(10f, 10f, 30f, 30f, Path.Direction.CW)
         }
 
         textPaint.apply {
@@ -70,10 +72,10 @@ class DrawerView(context: Context, attributeSet: AttributeSet? = null) :
         super.onDraw(canvas)
 
 
-        if (mBitmap != null)
-            canvas?.drawBitmap(mBitmap!!, 0f, 0f, null)
-        //canvas?.drawLine(startX,startY,stopX,stopY,mPaint)
-        //drawRectf(canvas!!)
+//        if (mBitmap != null)
+//            canvas?.drawBitmap(mBitmap!!, 0f, 0f, null)
+        canvas?.drawRect(recff, mPaint)
+        canvas?.drawPoint((recff.right + recff.left) / 2f, (recff.bottom + recff.top) / 2f,mPaint)
     }
 
 
@@ -126,8 +128,24 @@ class DrawerView(context: Context, attributeSet: AttributeSet? = null) :
 
 
     fun clearCanvas() {
-        path.reset()
+        //path.reset()
+        translateView()
         invalidate()
+    }
+
+    fun translateView() {
+
+        val matrix = Matrix()
+        matrix.setTranslate(10f, 10f)
+        linePath.transform(matrix)
+    }
+
+    fun getTranslationxX(): Float {
+        val v = FloatArray(9)
+        matrix.getValues(v)
+        val tx = v[Matrix.MTRANS_X]
+        val ty = v[Matrix.MTRANS_Y]
+        return tx;
     }
 
 

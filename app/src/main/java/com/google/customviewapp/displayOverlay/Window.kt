@@ -17,7 +17,7 @@ class Window(  // declaring required variables
         addFirstView()
     }
 
-    fun addFirstView() {
+    private fun addFirstView() {
         val mParams = WindowManager.LayoutParams( // Shrink the window to wrap the content rather
             // than filling the screen
             WindowManager.LayoutParams.WRAP_CONTENT,
@@ -31,12 +31,13 @@ class Window(  // declaring required variables
         val layoutInflater =
             context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         // inflating the view with the custom layout we created
-        mView = layoutInflater.inflate(R.layout.popup_window, null)
+        mView = layoutInflater.inflate(R.layout.action_menu, null)
 
         // set onClickListener on the remove button, which removes
         // the view from the window
         mView?.findViewById<View>(R.id.rubber)?.setOnClickListener { removeFirstView() }
         mView?.findViewById<View>(R.id.pencil)?.setOnClickListener { addSecondView() }
+        mView?.findViewById<View>(R.id.close)?.setOnClickListener { closeWindow() }
         // Define the position of the
         // window within the screen
         mParams.gravity = Gravity.START.or(Gravity.TOP)
@@ -44,7 +45,7 @@ class Window(  // declaring required variables
         addToWindow(mWindowManager, mView, mParams)
     }
 
-    fun addSecondView() {
+    private fun addSecondView() {
         val mParams = WindowManager.LayoutParams( // Shrink the window to wrap the content rather
             // than filling the screen
             WindowManager.LayoutParams.MATCH_PARENT,
@@ -63,10 +64,29 @@ class Window(  // declaring required variables
         // set onClickListener on the remove button, which removes
         // the view from the window
         mView2?.findViewById<View>(R.id.rubber)?.setOnClickListener { removeFirstView() }
+        mView2?.findViewById<View>(R.id.close)?.setOnClickListener { closeWindow() }
 
 
         val mWindowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         addToWindow(mWindowManager, mView2, mParams)
+    }
+
+    private fun closeWindow() {
+        try {
+            // remove the view from the window
+            (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).removeView(mView)
+            (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).removeView(mView2)
+            // invalidate the view
+            mView?.invalidate()
+            // remove all views
+            (mView?.parent as ViewGroup?)?.removeAllViews()
+
+            // the above steps are necessary when you are adding and removing
+            // the view simultaneously, it might give some exceptions
+        } catch (e: Exception) {
+            Log.d("Error2", e.toString())
+        }
+
     }
 
     private fun addToWindow(
@@ -97,22 +117,6 @@ class Window(  // declaring required variables
             Log.d("Error2", e.toString())
         }
     }
-
-//    private fun disableInteraction() {
-//        try {
-//            // remove the view from the window
-//            (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).removeView(mView)
-//            // invalidate the view
-//            mView.invalidate()
-//            // remove all views
-//            (mView.parent as ViewGroup).removeAllViews()
-//
-//            // the above steps are necessary when you are adding and removing
-//            // the view simultaneously, it might give some exceptions
-//        } catch (e: Exception) {
-//            Log.d("Error2", e.toString())
-//        }
-//    }
 
 
 }
